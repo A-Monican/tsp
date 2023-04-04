@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html><head>
+   <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+   <meta name="GENERATOR" content="Mozilla/4.51 [en] (X11; I; SunOS 5.7 sun4u) [Netscape]">
+   <title>TSPLIB FAQ</title>
+</head>
+<body>
+
+<h1>
+TSPLIB: Questions and Answers</h1>
+
+<hr><b>Q</b>: I found a better solution than the one claimed to be optimal
+in TSPLIB, is this possible?
+<p><b>A</b>: This never occured so far. In all cases when someone believed
+to have found a better solution, it was not taken into account that it
+is exactly specified how distances for TSPLIB problems have to computed.
+Typical errors are
+</p><ul>
+<li>
+evaluation of distances for geometric problem instances as floating-point
+numbers,</li>
+
+<li>
+false computation of geographic distances,</li>
+
+<li>
+use of display coordinates for distance computations.</li>
+</ul>
+Note, however, that due to round-off errors distance evaluations may slightly
+differ on different machines.
+<hr><b>Q</b>: Are the given solution values only the best ones known?.
+<p><b>A</b>: No, for every problem either the value of a provably optimal
+solution or an interval given by the best known lower and upper bound is
+listed. The optimality of solutions has been proven by branch-and-cut or
+branch-and-bound algorithms.
+</p><hr><b>Q</b>: I get wrong distances for problems of type GEO.
+<p><b>A</b>: There has been some confusion of how to compute the distances.
+I use the following code.
+</p><p>For converting coordinate input to longitude and latitude in radian:
+</p><p>&nbsp; PI = 3.141592;
+</p><p>&nbsp; deg = (int) x[i];
+<br>&nbsp; min = x[i]- deg;
+<br>&nbsp; rad = PI * (deg + 5.0 * min/ 3.0) / 180.0;
+<br>&nbsp;
+<br>For computing the geographical distance:
+</p><p>&nbsp;RRR = 6378.388;
+</p><p>&nbsp;q1 = cos( longitude[i] - longitude[j] );
+<br>&nbsp;q2 = cos( latitude[i] - latitude[j] );
+<br>&nbsp;q3 = cos( latitude[i] + latitude[j] );
+<br>&nbsp;dij = (int) ( RRR * acos( 0.5*((1.0+q1)*q2 - (1.0-q1)*q3) ) +
+1.0);
+</p><p>
+</p><hr><b>Q</b>: What does the function nint() do?
+<p><b>A</b>: The function "int nint (double x)" converts x into int format
+rounding to the nearest int value, except halfway cases are rounded to
+the int value larger in magnitude. This corresponds to the Fortran generic
+intrinsic function nint. But, rounding like "(int) (x+0.5)" should give
+the same results for TSPLIB problems.
+<br>Actually, it is better to use just
+"int" as in the previous answer.
+</p><hr><b>Q</b>: Are contributions still welcome?
+<p><b>A</b>: Basically yes, but, in view of the many problem instances
+that are already available, new instances should either be real challenge
+problems or be of general interest.
+</p><hr><b>Q</b>: Is an optimal tour available for every solved problem instance?
+<p><b>A</b>: No. We have included several optimal tours for testing purposes.
+It is not intended to provide all optimal tours. It should still be a challenge
+to find one.
+</p><hr><b>Q:</b> Are there optimal solutions available for instances other
+than symmetric ones?
+<p><b>A</b>: So far, no other optimal solutions have been made available.
+</p><hr><b>Q</b>: Which format has been used to store the data?
+<p><b>A</b>: All data has been compressed with the command "gzip" and has
+to be read using "gzip -d". Please contact your system administrator if
+this command is not available.
+</p><hr>
+<h1>
+Some remarks</h1>
+Here are some answers to questions or remarks that frequently occur.
+<br>&nbsp;
+<li>
+All files have been compressed under UNIX using "gzip". To uncompress the
+files "gzip -d" has to be used.</li>
+
+<br>&nbsp;
+<li>
+Problem a280 contains a double node, so there are essentially only 279
+nodes. We have not changed the problem name, though.</li>
+
+<br>&nbsp;
+<li>
+Display data must not be used for distance computations. It is only provided
+for obtaining a graphical display of a problem.</li>
+
+<br>&nbsp;
+<li>
+As written in the documentation, the asymmetric problems ftv90, ftv100,
+ftv110, ftv120, ftv130, ftv140, ftv150, and ftv160 are all derived from
+ftv170.</li>
+
+<br>&nbsp;
+<li>
+Yes, one can obtain "shorter" tours if distances are not rounded, but this
+would define different problem instances.</li>
+
+<br>&nbsp;
+<li>
+I do not keep track of the latest results on the vehicle routing problem
+instances.</li>
+
+<br>&nbsp;
+<li>
+Optimal solutions are mathematically proven optimal solutions not just
+heuristic solutions.</li>
+
+<br>&nbsp;
+<li>
+There may exist several shortest tours for a problem instance.</li>
+
+<br>&nbsp;
+<li>
+Distances may differ slightly due to numerical rounding. But if there is
+a big difference between your tour length and the tour lenghts provided
+then there is certainly a mistake.</li>
+
+<br>&nbsp;
+<li>
+We can give no further support for obtaining the data.</li>
+
+<p><br>
+</p><hr>
+<h1>
+References</h1>
+Applegate, D., Bixby, R., Chvatal, V. and W. Cook (1994), "Finding cuts
+in the TSP (A preliminary report)", Research Report, Rice University
+<p>Jünger, M., G. Reinelt and G. Rinaldi (1996), "The Traveling Salesman
+Problem", in: M. Ball, T. Magnanti, C. L. Monma and G.L. Nemhauser (eds.),
+Handbooks in Operations Research and Management Sciences: Networks, North-Holland
+</p><p>Jünger, M., G. Reinelt and G. Rinaldi (1997), "The Traveling Salesman
+Problem", in: M. Dell' Amico, F. Maffioli, S. Martello (eds.), Annotated
+Bibliographies in Combinatorial Optimization, 199-221, Wiley
+</p><p>Jünger, M., G. Reinelt and S. Thienel (1994), "Optimal and Provably
+Good Solutions for the Symmetric Traveling Salesman Problem", Zeitschrift
+fu"r Operations Research (40), 183-217
+</p><p>Padberg, M.W. and G. Rinaldi (1987), "Optimization of a 532 City Symmetric
+Traveling Salesman Problem by Branch and Cut", Operations Research Letters
+(6), 1-7
+</p><p>Padberg, M.W. and G. Rinaldi (1991), "A Branch and Cut Algorithm for
+the Resolution of Large-scale Symmetric Traveling Salesman Problems" SIAM
+Review (33), 60-100}
+<br>
+</p><hr>
+<br>&nbsp;
+<address>
+Last change: November 9, 2000</address>
+
+
+
+</body></html>
